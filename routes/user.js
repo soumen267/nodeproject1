@@ -105,4 +105,12 @@ router.get("/", (req,res)=> {
     });
 })
 
+router.get('/edit/:id', (req,res) => {
+    var id = req.params.id;
+    var query = (`SELECT * FROM tbl_student WHERE id = "${id}"`);
+    db.query(query, (err, data) => {
+        res.render('edit', {row:data});
+    })
+})
+
 module.exports = router;

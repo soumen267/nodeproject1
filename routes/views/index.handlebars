@@ -30,6 +30,7 @@
                     <th>Mobile</th>
                     <th>Address</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,8 @@
                     {{#if this.status}}
                     <td>{{ this.status }}</td>
                     {{/if}}
+                    <td><a href="/edit/{{this.id}}">Edit</a></td>
+                    <td><a href="/delete/{{this.id}}">Delete</a></td>
                 </tr>
                 {{/each}}
                 {{else}}
