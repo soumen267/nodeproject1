@@ -7,15 +7,15 @@ const db = require('../models/DBconfig');
 //     res.sendFile(__dirname + '/views/index.html');
 //     //res.render('index', {})
 // })
-router.get('/about', (req, res) => {
+router.get('/about', (req, res, next) => {
     res.render('about', {title: "About", active: { about: true }});
 })
 
-router.get('/register', (req, res) => {
-    res.render('register', {title: "Register", active: { register: true }});
+router.get('/register', (req, res, next) => {
+    res.render('register', {title: "Register", active: { register: true }, success: req.session.success, errors: req.session.errors });
 })
 
-router.get('/login', (req, res) => {
+router.get('/login', (req, res, next) => {
     res.render('login', {title: "Login", active: { login: true }});
 })
 
@@ -28,7 +28,21 @@ router.post('/register', (req, res) => {
     const address = req.body.address;
     var samplefile;
     var uploadpath;
-    if(!req.files || Object.keys(req.files).length === 0)
+    req.checkBody('name', 'Name is required.').notEmpty();
+    req.checkBody('username', 'Username is required.').notEmpty();
+    req.checkBody('email', 'Email is required.').notEmpty().isEmail();
+    req.checkBody('password', 'Password is required.').notEmpty().isLength({min:1});
+    req.checkBody('mobile', 'Mobile is required.').notEmpty().isMobilePhone;
+    req.checkBody('address', 'Address is required.').notEmpty();
+
+    var errors = req.validationErrors();
+
+    if(errors){
+        req.session.errors = errors;
+        req.session.success = false;
+        res.redirect('/register');
+    }else{
+        if(!req.files || Object.keys(req.files).length === 0)
     {
         return res.status(400).send('No files were uploaded.');
     }
@@ -46,11 +60,13 @@ router.post('/register', (req, res) => {
                 if(err) throw err;
                 console.log('record inserted');
                 req.flash('success', 'Data Inserted successfully!');
-            })            
+            })
+            req.flash('success', 'Sample Data Register');
             res.redirect('/');
             //res.send('File Uploaded!');
         }
     })
+    }
 })
 
 router.post('/login', (req, res) => {
@@ -67,30 +83,22 @@ router.post('/login', (req, res) => {
             }else{
                 console.log('Invalid credentials!');
             }
-            res.end;
         })
     }else{
         res.send('Please enter username and password');
-        res.end;
     }
 })
 
-// router.use((req, res) => {
-//     res.status(404);
-//     res.render('404');
-//     res.header("Content-Type", "text/html");
-// })
 router.get('/welcome', (req,res) => {
     if(req.session.loggedin){
         res.send(req.session.username);
     }else{
         res.send('Please login to view this page!');
     }
-    res.end();
 })
 
-router.get("/", (req,res)=> {
-    db.query("SELECT * FROM tbl_student", (err, data) => {
+router.get("/", (req,res, next)=> {
+    db.query("SELECT * FROM tbl_student WHERE is_deleted=0", (err, data) => {
         if(err){
             //req.flash('error', err);
             //console.log(err)
@@ -98,18 +106,51 @@ router.get("/", (req,res)=> {
         }
         else{
             //console.log(result)
-            res.render('index', {title: "Home - Page", userData:data, active: { index: true }});
+            res.render('index', {title: "Home - Page", userData:data, active: { index: true }, message:req.flash('success')});
         }
         //res.send(result);
         //res.sendFile(__dirname + '/views/index');
     });
 })
-
-router.get('/edit/:id', (req,res) => {
+//edit data
+router.get('/edit/:id', (req,res,next) => {
     var id = req.params.id;
     var query = (`SELECT * FROM tbl_student WHERE id = "${id}"`);
     db.query(query, (err, data) => {
-        res.render('edit', {row:data});
+        res.render('edit', {title: "Edit Page", row:data});
+    })
+})
+
+router.post('/edit', (req,res,next) => {
+    var id = req.body.id;
+    var name = req.body.name;
+    var username = req.body.username;
+    var email = req.body.email;
+    var mobile = req.body.mobile;
+    var address = req.body.address;
+
+    var query = `UPDATE tbl_student SET name="${name}", username="${username}", email="${email}", mobile="${mobile}", address="${address}" WHERE id="${id}"`;
+    db.query(query, (err, data)=>{
+        if(err){
+            throw err;
+        }else{
+            req.flash('success', 'Sample Data Updated');
+            res.redirect('/');
+        }
+    })
+})
+
+router.get('/delete/:id', (req,res,next) => {
+    var id = req.params.id;
+    var deleted = '1';
+    var query = `UPDATE tbl_student SET is_deleted="${deleted}" WHERE id="${id}"`;
+    db.query(query, (err, data)=>{
+        if(err){
+            throw err;
+        }else{
+            req.flash('success', 'Sample Data Deleted');
+            res.redirect('/');
+        }
     })
 })
 

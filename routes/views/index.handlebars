@@ -1,25 +1,12 @@
 {{>header}}
-<div class="container">
-    {{#if error}}
-    <div class="alert alert-danger">{{error}}</div>
+<div class="container mt-5">
+    {{#if message}}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{message}}</strong>
+    </div>
     {{/if}}
-    {{#if success}}
-    <div class="alert alert-primary">{{success}}</div>
-    {{/if}}
-        <button type="submit" class="btn btn-primary" href="/create">ADD</button>
-        {{!-- <form action="/quotes" method="POST" role="form">
-            <legend class="text-center">This is Home Page</legend>
-        
-            <div class="form-group">
-                <label for="">Username</label>
-                <input type="text" class="form-control" name="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <label for="">Password</label>
-                <input type="text" class="form-control" name="password" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form> --}}
+        <a class="btn btn-primary" href="/register">ADD</a>
     <table class="table table-hover">
         <legend class="text-center">User List</legend>
             <thead>
@@ -30,7 +17,7 @@
                     <th>Mobile</th>
                     <th>Address</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,13 +32,14 @@
                     {{#if this.status}}
                     <td>{{ this.status }}</td>
                     {{/if}}
-                    <td><a href="/edit/{{this.id}}">Edit</a></td>
-                    <td><a href="/delete/{{this.id}}">Delete</a></td>
+                    <td><a href="/edit/{{this.id}}"><i class="fa fa-edit"></i></a></td>
+                    <td><a href="/delete/{{this.id}}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash" style="color:red"></i></a></td>
                 </tr>
                 {{/each}}
                 {{else}}
                 <td>No Data found</td>
                 {{/if}}
             </tbody>
-    </table>        
+    </table>
     </div>
+{{>footer}}

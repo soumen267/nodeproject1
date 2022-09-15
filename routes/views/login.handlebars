@@ -1,15 +1,24 @@
 {{>header}}
-<div class="container">
-    <h3 class="text-center">User Login</h3>
-    <form action="/login" method="post">
-        <div class="form-group">
-            <label for="username"><i class="fas fa-user"></i> Username</label>
-            <input type="text" name="username" id="username" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="password"><i class="fas fa-lock"></i> Password</label>
-            <input type="password" name="password" id="password" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">SAVE</button>
-    </form>
+<div class="container mt-5">
+    <div class="row h-100 justify-content-center align-items-center">
+        <form action="/login" method="post" class="col-12">
+            <legend>{{title}}</legend>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <label for="username"> Username</label>
+                    <input type="text" name="username" id="username" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control">
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">SAVE</button>
+        </form>
+    </div>
 </div>
+{{>footer}}

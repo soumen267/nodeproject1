@@ -1,35 +1,66 @@
 {{>header}}
-<div class="container">
-    <form action="/register" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-        <label>Name</label>
-        <input type="text" name="name" class="form-control">
-        </div>
-        <div class="form-group">
-        <label>Username</label>
-        <input type="text" name="username" class="form-control">
-        </div>
-        <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control">
-        </div>
-        <div class="form-group">
-        <label>Password</label>
-        <input type="password" name="password" class="form-control">
-        </div>
-        <div class="form-group">
-        <label>Mobile</label>
-        <input type="text" name="mobile" class="form-control">
-        </div>
-        <div class="form-group">
-        <label>Address</label>
-        <textarea name="address" class="form-control" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-        <label>File</label>
-        <input type="file" name="filename" id="filename" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    
+<div class="container mt-1">
+    {{#if errors }}
+    {{#each errors }}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ this.msg }}</strong>
+    </div>
+    {{/each}}
+    {{/if}}
+    <div class="row h-100 justify-content-center align-items-center">
+        <form action="/register" method="post" enctype="multipart/form-data" class="col-12">
+            <legend>{{title}}</legend>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>Email</label>
+                    <input type="text" name="email" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>Mobile</label>
+                    <input type="text" name="mobile" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>Address</label>
+                    <textarea name="address" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label>Image</label>
+                    <input type="file" name="filename" id="filename" class="form-control-file" accept="image/*">
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+{{>footer}}
