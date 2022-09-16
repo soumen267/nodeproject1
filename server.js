@@ -3,6 +3,8 @@ const path = require('path');
 const exphbs  = require('express-handlebars');
 var session = require('express-session');
 var flash = require('connect-flash');
+const multer = require('multer');
+const upload = multer();
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
@@ -21,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(upload.array());
 
 
 app.use(session({
@@ -51,6 +53,6 @@ app.listen(port, err => {
         return console.log("ERROR", err)
     }
     console.log(`Server is running on port http://localhost:${port}`);
-})
+});
 
 module.exports = app;

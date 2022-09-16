@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/DBconfig');
+//const mdb = require('../models/mongoDB');
 //const { response } = require('../server');
 // router.get('/', (req, res) => {
 //     //res.send('Hello');
