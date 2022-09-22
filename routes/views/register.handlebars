@@ -9,7 +9,8 @@
     {{/each}}
     {{/if}}
     <div class="row h-100 justify-content-center align-items-center">
-        <form action="/register" method="post" enctype="multipart/form-data" class="col-12">
+        {{!-- <form action="/register" method="post" enctype="multipart/form-data" class="col-12"> --}}
+        <form action="/register" method="post" class="col-12">
             <legend>{{title}}</legend>
             <hr>
             <div class="row">
@@ -48,12 +49,13 @@
                     <textarea name="address" class="form-control" rows="3"></textarea>
                 </div>
             </div>
-            <div class="row">
+            {{!-- <div class="row">
                 <div class="col-6">
                     <label>Image</label>
                     <input type="file" name="filename" id="filename" class="form-control-file" accept="image/*">
                 </div>
-            </div>
+            </div> --}}
+            <input type="hidden" name="is-deleted" value="0">
             <br />
             <div class="row">
                 <div class="col-4">
